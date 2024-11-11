@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FCM Test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>FCM Test</h1>
+    <button id="subscribeButton">Subscribe to Notifications</button>
+    <div id="tokenDisplay"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbS2HTznX3REWTDCPkFmC6bCAoLh3uH3E",
+            authDomain: "syla-plus.firebaseapp.com",
+            projectId: "syla-plus",
+            storageBucket: "syla-plus.firebasestorage.app",
+            messagingSenderId: "376487359586",
+            appId: "1:376487359586:web:b7851314fbaaf72db3cd3b",
+            measurementId: "G-6N780F2CJJ"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        // Request notification permission and get token
+        const subscribeButton = document.getElementById('subscribeButton');
+        subscribeButton.onclick = () => {
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                    messaging.getToken({ vapidKey: 'BNXMTDcfpU_6uv9hEE4lF1i8ScdHTutv8r5J_yF10uPhez6grOTwfGofH9Fw2O_3lVQ9l68xD7BnUgv6JJ6N760' }) // Replace with your VAPID key
+                        .then((token) => {
+                            console.log('Token:', token);
+                            document.getElementById('tokenDisplay').textContent = token;
+                            // Send token to your FastAPI backend
+                            // sendTokenToServer(token); 
+                        })
+                        .catch((err) => {
+                            console.error('Error getting token:', err);
+                        });
+                } else {
+                    console.log('Notification permission denied.');
+                }
+            });
+        };
+
+        // Function to send token to FastAPI backend
+        function sendTokenToServer(token) {
+            fetch('/register_token', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: token })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

@@ -43,7 +43,7 @@ async function initFCM() {
       const token = await getToken(messaging, { vapidKey: "BNXMTDcfpU_6uv9hEE4lF1i8ScdHTutv8r5J_yF10uPhez6grOTwfGofH9Fw2O_3lVQ9l68xD7BnUgv6JJ6N760" });
       console.log("FCM Token:", token);
       document.getElementById("tokenMessage").innerText = `FCM Token:\n${token}`;
-      // sendTokenToBackend(token);
+      sendTokenToBackend(token);
     } else {
       console.error("Notification permission not granted");
     }
@@ -52,14 +52,14 @@ async function initFCM() {
   }
 }
 
-// // Send the token to the backend
-// async function sendTokenToBackend(token) {
-//   await fetch("http://localhost:8000/notifications", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ token: token, title: "Hello", body: "Welcome to Syla Plus" }),
-//   });
-// }
+// Send the token to the backend
+async function sendTokenToBackend(token) {
+  await fetch("http://localhost:8000/send-notification", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: token, title: "Hello", body: "Welcome to Syla Plus" }),
+  });
+}
 
 document.getElementById("subscribe").addEventListener("click", initFCM);
 
