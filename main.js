@@ -63,6 +63,18 @@ async function sendTokenToBackend(token) {
 
 document.getElementById("subscribe").addEventListener("click", initFCM);
 
+onMessage(messaging, (payload) => {
+  console.log("Message received. ", payload);
+  // Customize notification here
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: "./two.jpg",
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
 // // Handle incoming messages
 // onMessage(messaging, (payload) => {
 //   console.log("Message received: ", payload);
