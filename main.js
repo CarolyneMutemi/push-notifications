@@ -84,7 +84,8 @@ onMessage(messaging, (payload) => {
     icon: "./two.jpg",
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // self.registration.showNotification(notificationTitle, notificationOptions);
+  new Notification(notificationTitle, notificationOptions);
 });
 
 // // Handle incoming messages
