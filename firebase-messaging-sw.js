@@ -1,6 +1,6 @@
 // Import the Firebase scripts needed to handle background messages
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
-import { getMessaging, getToken, onMessage } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-messaging.js';
+importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
 // Initialize Firebase app inside the service worker
 const firebaseConfig = {
@@ -13,11 +13,11 @@ const firebaseConfig = {
   measurementId: "G-6N780F2CJJ"
 };
 
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-const messaging = getMessaging(app);
+const messaging = firebase.messaging();
 
-onMessage(messaging, (payload) => {
+messaging.onMessage((payload) => {
   console.log("Message received. ", payload);
   // Customize notification here
   const notificationTitle = payload.notification.title;
